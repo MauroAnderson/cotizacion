@@ -14,26 +14,28 @@ body {
   background: linear-gradient(135deg, #0f172a, #1e40af);
 }
 
+/* CONTENEDOR */
 .container {
   max-width: 1000px;
-  margin: 40px auto;
+  margin: 30px auto;
   background: rgba(255,255,255,0.97);
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
-/* HEADER EMPRESA */
+/* HEADER MÁS COMPACTO */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 15px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .logo {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   background: linear-gradient(90deg,#2563eb,#06b6d4);
   -webkit-background-clip: text;
@@ -41,24 +43,24 @@ body {
 }
 
 .title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   color: #374151;
 }
 
 /* CLIENTE */
 .cliente-box {
-  margin-top: 20px;
-  background: #f1f5f9;
-  padding: 15px;
-  border-radius: 10px;
-  font-size: 14px;
+  margin-top: 8px;
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
   display: flex;
   justify-content: space-between;
 }
 
 .cliente-nombre {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: #111827;
 }
@@ -67,39 +69,40 @@ body {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
 th {
   background: linear-gradient(90deg,#2563eb,#06b6d4);
   color: white;
-  padding: 12px;
-  font-size: 13px;
+  padding: 8px;
+  font-size: 12px;
 }
 
 td {
-  padding: 12px;
+  padding: 8px;
   border-bottom: 1px solid #eee;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 tr:hover {
   background: #f9fafb;
 }
 
+/* COLUMNAS */
 td.id {
-  width: 30px;
-  font-size: 11px;
+  width: 25px;
+  font-size: 10px;
   color: #888;
 }
 
 td.cantidad {
-  width: 60px;
+  width: 50px;
   text-align: center;
 }
 
 td.producto {
-  width: 45%;
+  width: 50%;
   font-weight: 600;
 }
 
@@ -109,21 +112,21 @@ td.right {
 
 /* IMAGEN */
 img {
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
 }
 
 img:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 /* TOTAL */
 tfoot td {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -132,14 +135,14 @@ tfoot td {
   color: #2563eb;
 }
 
-/* BOTON */
+/* BOTÓN */
 .btn {
-  margin-top: 25px;
-  padding: 12px 20px;
+  margin-top: 18px;
+  padding: 10px 18px;
   background: linear-gradient(90deg,#2563eb,#06b6d4);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -158,11 +161,10 @@ tfoot td {
 }
 
 .modal img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 12px;
+  max-width: 92%;
+  max-height: 92%;
+  border-radius: 10px;
 }
-
 </style>
 </head>
 
@@ -255,7 +257,11 @@ fetch(url)
 
       tr.innerHTML = `
         <td class="id">${id++}</td>
-        <td><img src="${imagen}" onclick="verImagen('${imagen}')"></td>
+        <td>
+          <img src="${imagen}" 
+               onclick="verImagen('${imagen}')"
+               onerror="this.src='https://via.placeholder.com/50'">
+        </td>
         <td class="cantidad">${cantidad}</td>
         <td class="producto">${producto}</td>
         <td class="right">S/ ${precio}</td>
@@ -268,7 +274,6 @@ fetch(url)
     }
   });
 
-  // CLIENTE EN MAYÚSCULA
   document.getElementById("cliente").innerText = clienteFiltro.toUpperCase();
   document.getElementById("total_final").innerText = totalGeneral.toFixed(2);
 });
