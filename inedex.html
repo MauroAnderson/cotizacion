@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cotización</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f4f7fb;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.info {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th {
+  background: #2563eb;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+tfoot td {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.total {
+  text-align: right;
+  color: #2563eb;
+}
+
+.btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #1e40af;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">UTANI</div>
+    <div class="title">COTIZACIÓN</div>
+  </div>
+
+  <div class="info">
+    <div>Cliente: <strong id="cliente"></strong></div>
+    <div>Fecha: <span id="fecha"></span></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody id="tabla"></tbody>
+
+    <tfoot>
+      <tr>
+        <td colspan="3" class="total">TOTAL</td>
+        <td class="total">S/ <span id="total_final">0</span></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <button class="btn" onclick="window.print()">Descargar PDF</button>
+
+</div>
+
+<script>
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8ZtbK9OCo6gEqklNWN98PT8NIIi7nQQos5QJuztDNr6Di3ZS41mviOJwSjNsnFrOuk03MU3aF18K8/pub?output=csvL";
+
+// cliente desde URL
+const params = new URLSearchParams(window.location.search);
+const clienteFiltro = params.get("cliente");
+
+// fecha automática
+document.getElementById("fecha").innerText = new Date().toLocaleDateString();
+
+fetch(url)
+  .then(res => res.text())
+  .then(csv => {
+    const filas = csv.split("\\n").slice(1);
+
+    let totalGeneral = 0;
+    const tbody = document.getElementById("tabla");
+
+    filas.forEach(fila => {
+      const [cliente, cantidad, producto, precio, total] = fila.split(",");
+
+      if (cliente === clienteFiltro) {
+
+        const subtotal = parseFloat(total);
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${producto}</td>
+          <td>${cantidad}</td>
+          <td>${precio}</td>
+          <td>${subtotal}</td>
+        `;
+
+        tbody.appendChild(tr);
+
+        totalGeneral += subtotal;
+      }
+    });
+
+    document.getElementById("cliente").innerText = clienteFiltro;
+    document.getElementById("total_final").innerText = totalGeneral.toFixed(2);
+  });
+</script>
+
+</body>
+</html>
