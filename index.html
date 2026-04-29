@@ -14,57 +14,28 @@ body {
   background: linear-gradient(135deg, #0f172a, #1e40af);
 }
 
-/* CONTENEDOR */
 .container {
   max-width: 1000px;
   margin: 30px auto;
   background: rgba(255,255,255,0.97);
   border-radius: 16px;
   padding: 22px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
-/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 6px;
-  margin-bottom: 8px;
 }
 
-.logo {
-  font-size: 22px;
-  font-weight: 800;
-  background: linear-gradient(90deg,#2563eb,#06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+.logo { font-weight: 800; }
+.title { font-size: 14px; }
 
-.title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-}
-
-/* CLIENTE */
 .cliente-box {
-  margin-top: 8px;
-  background: #f8fafc;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 13px;
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
 }
 
-.cliente-nombre {
-  font-size: 16px;
-  font-weight: 700;
-}
-
-/* TABLA */
 .tabla-responsive {
   width: 100%;
   overflow-x: auto;
@@ -73,162 +44,68 @@ body {
 table {
   width: 100%;
   min-width: 600px;
-  border-collapse: collapse;
-  margin-top: 15px;
 }
-
-th {
-  background: linear-gradient(90deg,#2563eb,#06b6d4);
-  color: white;
-  padding: 8px;
-  font-size: 12px;
-}
-
-td {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-  font-size: 13px;
-}
-
-tr:hover {
-  background: #f9fafb;
-}
-
-td.id { width: 25px; font-size: 10px; }
-td.cantidad { width: 50px; text-align: center; }
-td.producto { width: 50%; font-weight: 600; }
-td.right { text-align: right; }
 
 img.producto-img {
   width: 42px;
-  height: 42px;
-  object-fit: cover;
-  border-radius: 6px;
   cursor: pointer;
 }
 
-/* TOTAL */
-tfoot td {
-  font-size: 16px;
-  font-weight: 800;
+.cards { display: none; }
+
+@media (max-width:768px){
+  .tabla-responsive { display:none; }
+  .cards {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
 }
 
-.total {
-  text-align: right;
-  color: #2563eb;
-}
-
-/* BOTÓN */
-.btn {
-  margin-top: 18px;
-  padding: 10px 18px;
-  background: linear-gradient(90deg,#2563eb,#06b6d4);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* ===================== */
-/* MODAL NUEVO (INTUITIVO) */
-/* ===================== */
+/* ===== MODAL ===== */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: black;
-  flex-direction: column;
-  justify-content: space-between;
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:black;
+  z-index:999;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
-/* BARRA SUPERIOR */
 .top-bar {
-  padding: 15px;
-  color: white;
-  font-size: 18px;
+  color:white;
+  padding:15px;
 }
 
-.volver {
-  cursor: pointer;
-}
-
-/* IMAGEN */
-.modal img {
-  max-width: 100%;
-  max-height: 75vh;
-  object-fit: contain;
-  margin: auto;
-}
-
-/* BARRA INFERIOR */
 .bottom-bar {
-  padding: 15px;
-  text-align: center;
+  text-align:center;
+  padding:15px;
 }
 
 .btn-cerrar {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  background: white;
-  font-weight: bold;
-  cursor: pointer;
+  padding:10px 20px;
+  border-radius:20px;
 }
 
-/* ===================== */
-/* CARDS MOBILE */
-/* ===================== */
-.cards {
-  display: none;
+/* CARRUSEL */
+.carrusel {
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-@media (max-width: 768px) {
+.carrusel img {
+  max-width:90%;
+  max-height:70vh;
+}
 
-  .tabla-responsive {
-    display: none;
-  }
-
-  .cards {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-  }
-
-  .card {
-    background: #f8fafc;
-    padding: 10px;
-    border-radius: 10px;
-    display: flex;
-    gap: 10px;
-  }
-
-  .card img {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    object-fit: cover;
-    cursor: pointer;
-  }
-
-  .card-info h4 {
-    margin: 0;
-    font-size: 14px;
-  }
-
-  .card-info p {
-    margin: 2px 0;
-    font-size: 12px;
-  }
-
-  .btn {
-    width: 100%;
-  }
-
+.nav {
+  font-size:40px;
+  color:white;
+  cursor:pointer;
+  padding:10px;
 }
 </style>
 </head>
@@ -237,66 +114,54 @@ tfoot td {
 
 <div class="container">
 
-  <div class="header">
-    <div class="logo">SHOPnew</div>
-    <div class="title">COTIZACIÓN</div>
-  </div>
+<div class="header">
+<div class="logo">SHOPnew</div>
+<div class="title">COTIZACIÓN</div>
+</div>
 
-  <div class="cliente-box">
-    <div>
-      Cliente:<br>
-      <span id="cliente" class="cliente-nombre"></span>
-    </div>
-    <div>
-      Fecha:<br>
-      <span id="fecha"></span>
-    </div>
-  </div>
+<div class="cliente-box">
+<span id="cliente"></span>
+<span id="fecha"></span>
+</div>
 
-  <!-- TABLA PC -->
-  <div class="tabla-responsive">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Img</th>
-          <th>Cant.</th>
-          <th>Producto</th>
-          <th class="right">Precio</th>
-          <th class="right">Total</th>
-        </tr>
-      </thead>
+<div class="tabla-responsive">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Img</th>
+<th>Cant</th>
+<th>Producto</th>
+<th>Precio</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody id="tabla"></tbody>
+</table>
+</div>
 
-      <tbody id="tabla"></tbody>
+<div class="cards" id="cards"></div>
 
-      <tfoot>
-        <tr>
-          <td colspan="5" class="total">TOTAL</td>
-          <td class="total">S/ <span id="total_final">0</span></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
-  <!-- CARDS MOBILE -->
-  <div class="cards" id="cards"></div>
-
-  <button class="btn" onclick="window.print()">Descargar PDF</button>
+<button onclick="window.print()">PDF</button>
 
 </div>
 
-<!-- MODAL NUEVO -->
+<!-- MODAL -->
 <div id="modal" class="modal">
 
-  <div class="top-bar">
-    <span class="volver">← Volver</span>
-  </div>
+<div class="top-bar">
+<span onclick="cerrarModal()">← Volver</span>
+</div>
 
-  <img id="imgGrande">
+<div class="carrusel">
+<span class="nav" onclick="prev()">‹</span>
+<img id="imgGrande">
+<span class="nav" onclick="next()">›</span>
+</div>
 
-  <div class="bottom-bar">
-    <button class="btn-cerrar">Cerrar</button>
-  </div>
+<div class="bottom-bar">
+<button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>
+</div>
 
 </div>
 
@@ -304,112 +169,72 @@ tfoot td {
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8ZtbK9OCo6gEqklNWN98PT8NIIi7nQQos5QJuztDNr6Di3ZS41mviOJwSjNsnFrOuk03MU3aF18K8/pub?output=csv";
 
 const params = new URLSearchParams(window.location.search);
-const clienteFiltro = (params.get("cliente") || "").trim().toLowerCase();
+const clienteFiltro = (params.get("cliente")||"").toLowerCase();
 
 document.getElementById("fecha").innerText = new Date().toLocaleDateString();
 
-const modal = document.getElementById("modal");
-const imgGrande = document.getElementById("imgGrande");
+let imagenes = [];
+let index = 0;
 
-function abrirModal(src) {
-  modal.style.display = "flex";
-  imgGrande.src = src;
+function abrirModal(imgs){
+  imagenes = imgs.split("|");
+  index = 0;
+  mostrar();
+  modal.style.display="flex";
 }
 
-/* BOTONES NUEVOS */
-const btnVolver = document.querySelector(".volver");
-const btnCerrarAbajo = document.querySelector(".btn-cerrar");
+function mostrar(){
+  document.getElementById("imgGrande").src = imagenes[index];
+}
 
-btnVolver.addEventListener("click", () => modal.style.display = "none");
-btnCerrarAbajo.addEventListener("click", () => modal.style.display = "none");
+function next(){
+  index = (index+1)%imagenes.length;
+  mostrar();
+}
 
-/* cerrar tocando fondo */
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
-  }
-});
+function prev(){
+  index = (index-1+imagenes.length)%imagenes.length;
+  mostrar();
+}
+
+function cerrarModal(){
+  modal.style.display="none";
+}
 
 fetch(url)
-.then(res => res.text())
-.then(csv => {
+.then(r=>r.text())
+.then(csv=>{
+  const filas = csv.split("\n").slice(1);
+  let id=1;
 
-  const filas = csv.trim().split("\n").slice(1);
+  filas.forEach(f=>{
+    const c=f.split(",");
+    if(c[0].toLowerCase()==clienteFiltro){
 
-  let totalGeneral = 0;
-  let id = 1;
+      const tr=document.createElement("tr");
 
-  const tbody = document.getElementById("tabla");
-  const cards = document.getElementById("cards");
+      const img=document.createElement("img");
+      img.src=c[5].split("|")[0];
+      img.className="producto-img";
+      img.onclick=()=>abrirModal(c[5]);
 
-  filas.forEach(fila => {
-
-    const col = fila.split(",");
-
-    const cliente = col[0]?.trim().toLowerCase();
-    const cantidad = col[1];
-    const producto = col[2];
-    const precio = col[3];
-    const total = col[4];
-    const imagen = col[5];
-
-    if (cliente === clienteFiltro) {
-
-      const subtotal = parseFloat(total);
-
-      /* TABLA */
-      const tr = document.createElement("tr");
-
-      const img = document.createElement("img");
-      img.src = imagen;
-      img.className = "producto-img";
-      img.onerror = () => img.src = "https://via.placeholder.com/50";
-      img.addEventListener("click", () => abrirModal(imagen));
-
-      const tdImg = document.createElement("td");
-      tdImg.appendChild(img);
-
-      tr.innerHTML = `
-        <td class="id">${id}</td>
-        <td class="cantidad">${cantidad}</td>
-        <td class="producto">${producto}</td>
-        <td class="right">S/ ${precio}</td>
-        <td class="right">S/ ${subtotal}</td>
+      tr.innerHTML=`
+      <td>${id}</td>
+      <td></td>
+      <td>${c[1]}</td>
+      <td>${c[2]}</td>
+      <td>${c[3]}</td>
+      <td>${c[4]}</td>
       `;
 
-      tr.insertBefore(tdImg, tr.children[1]);
-      tbody.appendChild(tr);
+      tr.children[1].appendChild(img);
+      document.getElementById("tabla").appendChild(tr);
 
-      /* CARDS */
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const imgCard = document.createElement("img");
-      imgCard.src = imagen;
-      imgCard.onerror = () => imgCard.src = "https://via.placeholder.com/60";
-      imgCard.addEventListener("click", () => abrirModal(imagen));
-
-      const info = document.createElement("div");
-      info.className = "card-info";
-
-      info.innerHTML = `
-        <h4>${producto}</h4>
-        <p>Cantidad: ${cantidad}</p>
-        <p>Precio: S/ ${precio}</p>
-        <p><b>Total: S/ ${subtotal}</b></p>
-      `;
-
-      card.appendChild(imgCard);
-      card.appendChild(info);
-      cards.appendChild(card);
-
-      totalGeneral += subtotal;
       id++;
     }
   });
 
   document.getElementById("cliente").innerText = clienteFiltro.toUpperCase();
-  document.getElementById("total_final").innerText = totalGeneral.toFixed(2);
 });
 </script>
 
