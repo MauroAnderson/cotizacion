@@ -191,6 +191,7 @@ tfoot td {
     height: 60px;
     border-radius: 8px;
     object-fit: cover;
+    cursor: pointer;
   }
 
   .card-info h4 {
@@ -344,19 +345,27 @@ fetch(url)
       tr.insertBefore(tdImg, tr.children[1]);
       tbody.appendChild(tr);
 
-      /* CARDS MOBILE */
+      /* CARDS MOBILE (CON CLICK FUNCIONANDO) */
       const card = document.createElement("div");
       card.className = "card";
 
-      card.innerHTML = `
-        <img src="${imagen}">
-        <div class="card-info">
-          <h4>${producto}</h4>
-          <p>Cantidad: ${cantidad}</p>
-          <p>Precio: S/ ${precio}</p>
-          <p><b>Total: S/ ${subtotal}</b></p>
-        </div>
+      const imgCard = document.createElement("img");
+      imgCard.src = imagen;
+      imgCard.onerror = () => imgCard.src = "https://via.placeholder.com/60";
+      imgCard.addEventListener("click", () => abrirModal(imagen));
+
+      const info = document.createElement("div");
+      info.className = "card-info";
+
+      info.innerHTML = `
+        <h4>${producto}</h4>
+        <p>Cantidad: ${cantidad}</p>
+        <p>Precio: S/ ${precio}</p>
+        <p><b>Total: S/ ${subtotal}</b></p>
       `;
+
+      card.appendChild(imgCard);
+      card.appendChild(info);
 
       cards.appendChild(card);
 
