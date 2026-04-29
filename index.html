@@ -23,6 +23,7 @@ body{
   box-shadow:0 20px 50px rgba(0,0,0,0.25);
 }
 
+/* HEADER */
 .header{
   display:flex;
   justify-content:space-between;
@@ -41,6 +42,7 @@ body{
 
 .title{font-size:14px;}
 
+/* CLIENTE */
 .cliente-box{
   margin-top:8px;
   background:#f8fafc;
@@ -50,8 +52,15 @@ body{
   justify-content:space-between;
 }
 
+/* TABLA */
+.tabla-responsive{
+  width:100%;
+  overflow-x:auto;
+}
+
 table{
   width:100%;
+  min-width:600px;
   margin-top:15px;
   border-collapse:collapse;
 }
@@ -75,8 +84,10 @@ th:last-child{
 .total{
   font-weight:bold;
   color:#2563eb;
+  text-align:right;
 }
 
+/* IMAGEN */
 img.producto-img{
   width:42px;
   height:42px;
@@ -85,6 +96,7 @@ img.producto-img{
   cursor:pointer;
 }
 
+/* BOTÓN */
 .btn{
   margin-top:15px;
   width:100%;
@@ -130,23 +142,16 @@ img.producto-img{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-
   width:45px;
   height:45px;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   background:rgba(0,0,0,0.6);
   color:white;
   font-size:22px;
-
-  border:none;
   border-radius:50%;
-
   cursor:pointer;
-  z-index:10;
 }
 
 .prev{left:10px;}
@@ -165,7 +170,7 @@ img.producto-img{
   cursor:pointer;
 }
 
-/* CARDS */
+/* ===== CARDS ===== */
 .cards{display:none;}
 
 .total-mobile{
@@ -178,7 +183,9 @@ img.producto-img{
 
 @media(max-width:768px){
 
-  .tabla-responsive{display:none;}
+  .tabla-responsive{
+    display:none; /* 🔥 evita duplicado */
+  }
 
   .cards{
     display:flex;
@@ -210,7 +217,9 @@ img.producto-img{
   .card-info h4{margin:0;font-size:13px;}
   .card-info p{margin:0;font-size:11px;}
 
-  .total-mobile{display:block;}
+  .total-mobile{
+    display:block;
+  }
 }
 </style>
 </head>
@@ -229,6 +238,8 @@ img.producto-img{
 <div>Fecha:<br><span id="fecha"></span></div>
 </div>
 
+<!-- 🔥 TABLA CORRECTA -->
+<div class="tabla-responsive">
 <table>
 <thead>
 <tr>
@@ -250,9 +261,12 @@ img.producto-img{
 </tr>
 </tfoot>
 </table>
+</div>
 
+<!-- CARDS -->
 <div class="cards" id="cards"></div>
 
+<!-- TOTAL MÓVIL -->
 <div class="total-mobile">
 TOTAL: S/ <span id="total_mobile">0.00</span>
 </div>
@@ -321,6 +335,7 @@ const subtotal=parseFloat(c[4])||0;
 
 totalGeneral+=subtotal;
 
+/* TABLA */
 const tr=document.createElement("tr");
 
 const img=document.createElement("img");
@@ -340,6 +355,7 @@ tr.innerHTML=`
 tr.children[1].appendChild(img);
 tabla.appendChild(tr);
 
+/* CARD */
 const card=document.createElement("div");
 card.className="card";
 
