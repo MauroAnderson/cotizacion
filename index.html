@@ -39,9 +39,7 @@ body{
   -webkit-text-fill-color:transparent;
 }
 
-.title{
-  font-size:14px;
-}
+.title{font-size:14px;}
 
 .cliente-box{
   margin-top:8px;
@@ -52,14 +50,8 @@ body{
   justify-content:space-between;
 }
 
-.tabla-responsive{
-  width:100%;
-  overflow-x:auto;
-}
-
 table{
   width:100%;
-  min-width:600px;
   margin-top:15px;
   border-collapse:collapse;
 }
@@ -75,10 +67,16 @@ td{
   border-bottom:1px solid #eee;
 }
 
-.total{
+/* 🔥 ALINEACIÓN DERECHA */
+td:last-child,
+th:last-child{
   text-align:right;
+}
+
+.total{
   font-weight:bold;
   color:#2563eb;
+  text-align:right;
 }
 
 img.producto-img{
@@ -98,7 +96,7 @@ img.producto-img{
   border:none;
 }
 
-/* ===== MODAL ===== */
+/* MODAL */
 .modal{
   display:none;
   position:fixed;
@@ -107,12 +105,6 @@ img.producto-img{
   background:black;
   z-index:999;
   flex-direction:column;
-  justify-content:space-between;
-}
-
-.top-bar{
-  padding:15px;
-  color:white;
 }
 
 .carrusel-container{
@@ -121,47 +113,29 @@ img.producto-img{
   justify-content:center;
   align-items:center;
   height:100%;
-  padding:10px;
 }
 
 .modal img{
   max-width:100%;
   max-height:80vh;
-  object-fit:contain; /* 🔥 mantiene proporción */
+  object-fit:contain;
 }
 
-/* FLECHAS */
 .nav{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
   background:rgba(0,0,0,0.5);
-  border:none;
   color:white;
   font-size:30px;
   padding:10px;
   border-radius:50%;
   cursor:pointer;
-  z-index:10;
 }
 
 .prev{left:10px;}
 .next{right:10px;}
 
-.bottom-bar{
-  text-align:center;
-  padding:10px;
-}
-
-.btn-cerrar{
-  padding:10px 20px;
-  border-radius:20px;
-  background:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* ===== CARDS ===== */
 .cards{display:none;}
 
 .total-mobile{
@@ -173,14 +147,12 @@ img.producto-img{
 }
 
 @media(max-width:768px){
-
   .tabla-responsive{display:none;}
 
   .cards{
     display:flex;
     flex-direction:column;
     gap:6px;
-    margin-top:10px;
   }
 
   .card{
@@ -190,15 +162,12 @@ img.producto-img{
     background:#fff;
     border-radius:8px;
     box-shadow:0 4px 10px rgba(0,0,0,0.12);
-    align-items:center;
   }
 
-  /* 🔥 IMAGEN SIN DEFORMACIÓN */
   .card img{
     width:50px;
     height:50px;
-    object-fit:cover; /* 🔥 clave */
-    border-radius:6px;
+    object-fit:cover;
   }
 
   .card-info{
@@ -207,20 +176,10 @@ img.producto-img{
     gap:2px;
   }
 
-  .card-info h4{
-    margin:0;
-    font-size:13px;
-  }
+  .card-info h4{margin:0;font-size:13px;}
+  .card-info p{margin:0;font-size:11px;}
 
-  .card-info p{
-    margin:0;
-    font-size:11px;
-  }
-
-  .total-mobile{
-    display:block;
-  }
-
+  .total-mobile{display:block;}
 }
 </style>
 </head>
@@ -235,14 +194,8 @@ img.producto-img{
 </div>
 
 <div class="cliente-box">
-<div>
-Cliente:<br>
-<span id="cliente"></span>
-</div>
-<div>
-Fecha:<br>
-<span id="fecha"></span>
-</div>
+<div>Cliente:<br><span id="cliente"></span></div>
+<div>Fecha:<br><span id="fecha"></span></div>
 </div>
 
 <div class="tabla-responsive">
@@ -281,21 +234,15 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-
-<div class="top-bar">
+<div style="padding:15px;color:white;">
 <span onclick="modal.style.display='none'">← Volver</span>
 </div>
 
 <div class="carrusel-container">
-<button class="nav prev" onclick="prev()">‹</button>
+<span class="nav prev" onclick="prev()">‹</span>
 <img id="imgGrande">
-<button class="nav next" onclick="next()">›</button>
+<span class="nav next" onclick="next()">›</span>
 </div>
-
-<div class="bottom-bar">
-<button class="btn-cerrar" onclick="modal.style.display='none'">Cerrar</button>
-</div>
-
 </div>
 
 <script>
@@ -306,6 +253,11 @@ const clienteFiltro=(params.get("cliente")||"").toLowerCase();
 
 document.getElementById("fecha").innerText=new Date().toLocaleDateString();
 
+/* 🔥 FORMATO MONEDA */
+function formato(n){
+  return Number(n).toLocaleString("es-PE",{minimumFractionDigits:2});
+}
+
 let imgs=[],i=0;
 
 function abrirModal(src){
@@ -315,15 +267,8 @@ function abrirModal(src){
   modal.style.display="flex";
 }
 
-function next(){
-  i=(i+1)%imgs.length;
-  imgGrande.src=imgs[i];
-}
-
-function prev(){
-  i=(i-1+imgs.length)%imgs.length;
-  imgGrande.src=imgs[i];
-}
+function next(){i=(i+1)%imgs.length;imgGrande.src=imgs[i];}
+function prev(){i=(i-1+imgs.length)%imgs.length;imgGrande.src=imgs[i];}
 
 fetch(url)
 .then(r=>r.text())
@@ -337,7 +282,9 @@ const c=f.split(",");
 
 if(c[0].toLowerCase()==clienteFiltro){
 
+const precio=parseFloat(c[3])||0;
 const subtotal=parseFloat(c[4])||0;
+
 totalGeneral+=subtotal;
 
 const tr=document.createElement("tr");
@@ -352,13 +299,14 @@ tr.innerHTML=`
 <td></td>
 <td>${c[1]}</td>
 <td>${c[2]}</td>
-<td>S/ ${c[3]}</td>
-<td>S/ ${subtotal}</td>
+<td>S/ ${formato(precio)}</td>
+<td>S/ ${formato(subtotal)}</td>
 `;
 
 tr.children[1].appendChild(img);
 tabla.appendChild(tr);
 
+/* CARD */
 const card=document.createElement("div");
 card.className="card";
 
@@ -371,8 +319,8 @@ info.className="card-info";
 info.innerHTML=`
 <h4>${c[2]}</h4>
 <p>Cant: ${c[1]}</p>
-<p>S/ ${c[3]}</p>
-<p><b>${subtotal}</b></p>
+<p>S/ ${formato(precio)}</p>
+<p><b>S/ ${formato(subtotal)}</b></p>
 `;
 
 card.appendChild(imgCard);
@@ -384,8 +332,8 @@ id++;
 });
 
 document.getElementById("cliente").innerText=clienteFiltro.toUpperCase();
-document.getElementById("total_final").innerText=totalGeneral.toFixed(2);
-document.getElementById("total_mobile").innerText=totalGeneral.toFixed(2);
+document.getElementById("total_final").innerText=formato(totalGeneral);
+document.getElementById("total_mobile").innerText=formato(totalGeneral);
 
 });
 </script>
