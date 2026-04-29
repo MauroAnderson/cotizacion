@@ -14,6 +14,7 @@ body {
   background: linear-gradient(135deg, #0f172a, #1e40af);
 }
 
+/* CONTENEDOR */
 .container {
   max-width: 1000px;
   margin: 30px auto;
@@ -23,6 +24,7 @@ body {
   box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
+/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
@@ -46,6 +48,7 @@ body {
   color: #374151;
 }
 
+/* CLIENTE */
 .cliente-box {
   margin-top: 8px;
   background: #f8fafc;
@@ -59,11 +62,17 @@ body {
 .cliente-nombre {
   font-size: 16px;
   font-weight: 700;
-  color: #111827;
+}
+
+/* TABLA RESPONSIVE */
+.tabla-responsive {
+  width: 100%;
+  overflow-x: auto;
 }
 
 table {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
   margin-top: 15px;
 }
@@ -85,7 +94,7 @@ tr:hover {
   background: #f9fafb;
 }
 
-td.id { width: 25px; font-size: 10px; color: #888; }
+td.id { width: 25px; font-size: 10px; }
 td.cantidad { width: 50px; text-align: center; }
 td.producto { width: 50%; font-weight: 600; }
 td.right { text-align: right; }
@@ -96,13 +105,9 @@ img.producto-img {
   object-fit: cover;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-img.producto-img:hover {
-  transform: scale(1.08);
-}
-
+/* TOTAL */
 tfoot td {
   font-size: 16px;
   font-weight: 800;
@@ -113,6 +118,7 @@ tfoot td {
   color: #2563eb;
 }
 
+/* BOTÓN */
 .btn {
   margin-top: 18px;
   padding: 10px 18px;
@@ -137,7 +143,6 @@ tfoot td {
   align-items: center;
 }
 
-/* IMAGEN GRANDE */
 .modal img {
   max-width: 92%;
   max-height: 92%;
@@ -152,13 +157,50 @@ tfoot td {
   font-size: 38px;
   color: white;
   cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
 }
 
-.cerrar:hover {
-  transform: scale(1.2);
-  color: #06b6d4;
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+  .container {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cliente-box {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  th, td {
+    font-size: 11px;
+    padding: 6px;
+  }
+
+  img.producto-img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .modal img {
+    max-width: 95%;
+    max-height: 80%;
+  }
+
+  .cerrar {
+    font-size: 30px;
+    top: 10px;
+    right: 15px;
+  }
 }
 </style>
 </head>
@@ -183,27 +225,29 @@ tfoot td {
     </div>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Img</th>
-        <th>Cant.</th>
-        <th>Producto</th>
-        <th class="right">Precio</th>
-        <th class="right">Total</th>
-      </tr>
-    </thead>
+  <div class="tabla-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Img</th>
+          <th>Cant.</th>
+          <th>Producto</th>
+          <th class="right">Precio</th>
+          <th class="right">Total</th>
+        </tr>
+      </thead>
 
-    <tbody id="tabla"></tbody>
+      <tbody id="tabla"></tbody>
 
-    <tfoot>
-      <tr>
-        <td colspan="5" class="total">TOTAL</td>
-        <td class="total">S/ <span id="total_final">0</span></td>
-      </tr>
-    </tfoot>
-  </table>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="total">TOTAL</td>
+          <td class="total">S/ <span id="total_final">0</span></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 
   <button class="btn" onclick="window.print()">Descargar PDF</button>
 
@@ -227,32 +271,19 @@ const modal = document.getElementById("modal");
 const imgGrande = document.getElementById("imgGrande");
 const btnCerrar = document.querySelector(".cerrar");
 
-// abrir modal
 function abrirModal(src) {
   modal.style.display = "flex";
   imgGrande.src = src;
 }
 
-// cerrar con fondo
-modal.addEventListener("click", () => {
-  modal.style.display = "none";
-});
+modal.addEventListener("click", () => modal.style.display = "none");
 
-// evitar cierre al hacer click en imagen
-imgGrande.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
+imgGrande.addEventListener("click", (e) => e.stopPropagation());
 
-// cerrar con botón ✕
-btnCerrar.addEventListener("click", () => {
-  modal.style.display = "none";
-});
+btnCerrar.addEventListener("click", () => modal.style.display = "none");
 
-// cerrar con ESC
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    modal.style.display = "none";
-  }
+  if (e.key === "Escape") modal.style.display = "none";
 });
 
 fetch(url)
@@ -287,13 +318,9 @@ fetch(url)
       img.src = imagen;
       img.className = "producto-img";
 
-      img.onerror = () => {
-        img.src = "https://via.placeholder.com/50";
-      };
+      img.onerror = () => img.src = "https://via.placeholder.com/50";
 
-      img.addEventListener("click", () => {
-        abrirModal(imagen);
-      });
+      img.addEventListener("click", () => abrirModal(imagen));
 
       const tdImg = document.createElement("td");
       tdImg.appendChild(img);
@@ -307,7 +334,6 @@ fetch(url)
       `;
 
       tr.insertBefore(tdImg, tr.children[1]);
-
       tbody.appendChild(tr);
 
       totalGeneral += subtotal;
