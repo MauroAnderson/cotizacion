@@ -23,7 +23,6 @@ body{
   box-shadow:0 20px 50px rgba(0,0,0,0.25);
 }
 
-/* HEADER */
 .header{
   display:flex;
   justify-content:space-between;
@@ -42,7 +41,6 @@ body{
 
 .title{font-size:14px;}
 
-/* CLIENTE */
 .cliente-box{
   margin-top:8px;
   background:#f8fafc;
@@ -52,7 +50,6 @@ body{
   justify-content:space-between;
 }
 
-/* TABLA */
 .tabla-responsive{
   width:100%;
   overflow-x:auto;
@@ -76,8 +73,14 @@ td{
   border-bottom:1px solid #eee;
 }
 
+/* 🔥 YA TENÍAS TOTAL A LA DERECHA */
 td:last-child,
 th:last-child{
+  text-align:right;
+}
+
+/* 🔥 NUEVO: PRECIO A LA DERECHA */
+.right{
   text-align:right;
 }
 
@@ -87,7 +90,6 @@ th:last-child{
   text-align:right;
 }
 
-/* IMAGEN */
 img.producto-img{
   width:42px;
   height:42px;
@@ -96,7 +98,6 @@ img.producto-img{
   cursor:pointer;
 }
 
-/* BOTÓN */
 .btn{
   margin-top:15px;
   width:100%;
@@ -106,7 +107,7 @@ img.producto-img{
   border:none;
 }
 
-/* ===== MODAL ===== */
+/* MODAL */
 .modal{
   display:none;
   position:fixed;
@@ -115,12 +116,6 @@ img.producto-img{
   background:black;
   z-index:999;
   flex-direction:column;
-  justify-content:space-between;
-}
-
-.top-bar{
-  padding:15px;
-  color:white;
 }
 
 .carrusel-container{
@@ -137,7 +132,6 @@ img.producto-img{
   object-fit:contain;
 }
 
-/* 🔥 FLECHAS PERFECTAS */
 .nav{
   position:absolute;
   top:50%;
@@ -157,20 +151,6 @@ img.producto-img{
 .prev{left:10px;}
 .next{right:10px;}
 
-.bottom-bar{
-  text-align:center;
-  padding:10px;
-}
-
-.btn-cerrar{
-  padding:10px 20px;
-  border-radius:20px;
-  background:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* ===== CARDS ===== */
 .cards{display:none;}
 
 .total-mobile{
@@ -182,10 +162,7 @@ img.producto-img{
 }
 
 @media(max-width:768px){
-
-  .tabla-responsive{
-    display:none; /* 🔥 evita duplicado */
-  }
+  .tabla-responsive{display:none;}
 
   .cards{
     display:flex;
@@ -217,9 +194,7 @@ img.producto-img{
   .card-info h4{margin:0;font-size:13px;}
   .card-info p{margin:0;font-size:11px;}
 
-  .total-mobile{
-    display:block;
-  }
+  .total-mobile{display:block;}
 }
 </style>
 </head>
@@ -238,7 +213,6 @@ img.producto-img{
 <div>Fecha:<br><span id="fecha"></span></div>
 </div>
 
-<!-- 🔥 TABLA CORRECTA -->
 <div class="tabla-responsive">
 <table>
 <thead>
@@ -247,8 +221,8 @@ img.producto-img{
 <th>Img</th>
 <th>Cant</th>
 <th>Producto</th>
-<th>Precio</th>
-<th>Total</th>
+<th>Precio U</th>
+<th>Precio T</th>
 </tr>
 </thead>
 
@@ -263,10 +237,8 @@ img.producto-img{
 </table>
 </div>
 
-<!-- CARDS -->
 <div class="cards" id="cards"></div>
 
-<!-- TOTAL MÓVIL -->
 <div class="total-mobile">
 TOTAL: S/ <span id="total_mobile">0.00</span>
 </div>
@@ -277,8 +249,7 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-
-<div class="top-bar">
+<div style="padding:15px;color:white;">
 <span onclick="modal.style.display='none'">← Volver</span>
 </div>
 
@@ -287,11 +258,6 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 <img id="imgGrande">
 <button class="nav next" onclick="next()">›</button>
 </div>
-
-<div class="bottom-bar">
-<button class="btn-cerrar" onclick="modal.style.display='none'">Cerrar</button>
-</div>
-
 </div>
 
 <script>
@@ -335,7 +301,6 @@ const subtotal=parseFloat(c[4])||0;
 
 totalGeneral+=subtotal;
 
-/* TABLA */
 const tr=document.createElement("tr");
 
 const img=document.createElement("img");
@@ -348,14 +313,13 @@ tr.innerHTML=`
 <td></td>
 <td>${c[1]}</td>
 <td>${c[2]}</td>
-<td>S/ ${formato(precio)}</td>
+<td class="right">S/ ${formato(precio)}</td>
 <td>S/ ${formato(subtotal)}</td>
 `;
 
 tr.children[1].appendChild(img);
 tabla.appendChild(tr);
 
-/* CARD */
 const card=document.createElement("div");
 card.className="card";
 
