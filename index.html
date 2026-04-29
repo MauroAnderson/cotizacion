@@ -5,40 +5,42 @@
 <title>Cotización</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body {
   font-family: 'Poppins', sans-serif;
-  background: #f4f7fb;
+  background: #eef2f7;
   margin: 0;
   padding: 20px;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 950px;
   margin: auto;
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  background: #fff;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 600;
   color: #2563eb;
 }
 
 .info {
-  margin-top: 20px;
+  margin-top: 15px;
   display: flex;
   justify-content: space-between;
+  font-size: 14px;
 }
 
 table {
@@ -50,22 +52,34 @@ table {
 th {
   background: #2563eb;
   color: white;
-  padding: 12px;
+  padding: 10px;
+  font-size: 14px;
 }
 
 td {
   padding: 10px;
   border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+td.right {
+  text-align: right;
+}
+
+td.center {
+  text-align: center;
 }
 
 img {
-  width: 60px;
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
   border-radius: 6px;
 }
 
 tfoot td {
-  font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .total {
@@ -75,12 +89,16 @@ tfoot td {
 
 .btn {
   margin-top: 20px;
-  padding: 12px 20px;
+  padding: 10px 18px;
   background: #2563eb;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
+}
+
+.btn:hover {
+  background: #1e40af;
 }
 </style>
 </head>
@@ -102,11 +120,12 @@ tfoot td {
   <table>
     <thead>
       <tr>
-        <th>Imagen</th>
+        <th>ID</th>
+        <th>Img</th>
         <th>Producto</th>
-        <th>Cantidad</th>
-        <th>Precio</th>
-        <th>Total</th>
+        <th>Cant.</th>
+        <th class="right">Precio</th>
+        <th class="right">Total</th>
       </tr>
     </thead>
 
@@ -114,7 +133,7 @@ tfoot td {
 
     <tfoot>
       <tr>
-        <td colspan="4" class="total">TOTAL</td>
+        <td colspan="5" class="total">TOTAL</td>
         <td class="total">S/ <span id="total_final">0</span></td>
       </tr>
     </tfoot>
@@ -133,48 +152,51 @@ const clienteFiltro = (params.get("cliente") || "").trim().toLowerCase();
 document.getElementById("fecha").innerText = new Date().toLocaleDateString();
 
 fetch(url)
-  .then(res => res.text())
-  .then(csv => {
+.then(res => res.text())
+.then(csv => {
 
-    const filas = csv.trim().split("\n").slice(1);
+  const filas = csv.trim().split("\n").slice(1);
 
-    let totalGeneral = 0;
-    const tbody = document.getElementById("tabla");
+  let totalGeneral = 0;
+  let id = 1;
 
-    filas.forEach(fila => {
+  const tbody = document.getElementById("tabla");
 
-      const col = fila.split(",");
+  filas.forEach(fila => {
 
-      const cliente = col[0]?.trim().toLowerCase();
-      const cantidad = col[1];
-      const producto = col[2];
-      const precio = col[3];
-      const total = col[4];
-      const imagen = col[5];
+    const col = fila.split(",");
 
-      if (cliente === clienteFiltro) {
+    const cliente = col[0]?.trim().toLowerCase();
+    const cantidad = col[1];
+    const producto = col[2];
+    const precio = col[3];
+    const total = col[4];
+    const imagen = col[5];
 
-        const subtotal = parseFloat(total);
+    if (cliente === clienteFiltro) {
 
-        const tr = document.createElement("tr");
+      const subtotal = parseFloat(total);
 
-        tr.innerHTML = `
-          <td><img src="${imagen}" onerror="this.style.display='none'"></td>
-          <td>${producto}</td>
-          <td>${cantidad}</td>
-          <td>${precio}</td>
-          <td>${subtotal}</td>
-        `;
+      const tr = document.createElement("tr");
 
-        tbody.appendChild(tr);
+      tr.innerHTML = `
+        <td class="center">${id++}</td>
+        <td><img src="${imagen}" onerror="this.style.display='none'"></td>
+        <td>${producto}</td>
+        <td class="center">${cantidad}</td>
+        <td class="right">S/ ${precio}</td>
+        <td class="right">S/ ${subtotal}</td>
+      `;
 
-        totalGeneral += subtotal;
-      }
-    });
+      tbody.appendChild(tr);
 
-    document.getElementById("cliente").innerText = clienteFiltro;
-    document.getElementById("total_final").innerText = totalGeneral.toFixed(2);
+      totalGeneral += subtotal;
+    }
   });
+
+  document.getElementById("cliente").innerText = clienteFiltro;
+  document.getElementById("total_final").innerText = totalGeneral.toFixed(2);
+});
 </script>
 
 </body>
