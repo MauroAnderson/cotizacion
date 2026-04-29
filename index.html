@@ -137,10 +137,28 @@ tfoot td {
   align-items: center;
 }
 
+/* IMAGEN GRANDE */
 .modal img {
   max-width: 92%;
   max-height: 92%;
   border-radius: 10px;
+}
+
+/* BOTÓN CERRAR */
+.cerrar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 38px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.cerrar:hover {
+  transform: scale(1.2);
+  color: #06b6d4;
 }
 </style>
 </head>
@@ -193,6 +211,7 @@ tfoot td {
 
 <!-- MODAL -->
 <div id="modal" class="modal">
+  <span class="cerrar">&times;</span>
   <img id="imgGrande">
 </div>
 
@@ -206,6 +225,7 @@ document.getElementById("fecha").innerText = new Date().toLocaleDateString();
 
 const modal = document.getElementById("modal");
 const imgGrande = document.getElementById("imgGrande");
+const btnCerrar = document.querySelector(".cerrar");
 
 // abrir modal
 function abrirModal(src) {
@@ -213,7 +233,7 @@ function abrirModal(src) {
   imgGrande.src = src;
 }
 
-// cerrar modal
+// cerrar con fondo
 modal.addEventListener("click", () => {
   modal.style.display = "none";
 });
@@ -221,6 +241,18 @@ modal.addEventListener("click", () => {
 // evitar cierre al hacer click en imagen
 imgGrande.addEventListener("click", (e) => {
   e.stopPropagation();
+});
+
+// cerrar con botón ✕
+btnCerrar.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+// cerrar con ESC
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    modal.style.display = "none";
+  }
 });
 
 fetch(url)
@@ -251,7 +283,6 @@ fetch(url)
 
       const tr = document.createElement("tr");
 
-      // crear imagen correctamente
       const img = document.createElement("img");
       img.src = imagen;
       img.className = "producto-img";
@@ -260,7 +291,6 @@ fetch(url)
         img.src = "https://via.placeholder.com/50";
       };
 
-      // EVENTO CORRECTO (AQUÍ ESTABA TU ERROR)
       img.addEventListener("click", () => {
         abrirModal(imagen);
       });
