@@ -67,7 +67,6 @@ td{
   border-bottom:1px solid #eee;
 }
 
-/* 🔥 ALINEACIÓN DERECHA */
 td:last-child,
 th:last-child{
   text-align:right;
@@ -76,7 +75,6 @@ th:last-child{
 .total{
   font-weight:bold;
   color:#2563eb;
-  text-align:right;
 }
 
 img.producto-img{
@@ -96,7 +94,7 @@ img.producto-img{
   border:none;
 }
 
-/* MODAL */
+/* ===== MODAL ===== */
 .modal{
   display:none;
   position:fixed;
@@ -105,6 +103,12 @@ img.producto-img{
   background:black;
   z-index:999;
   flex-direction:column;
+  justify-content:space-between;
+}
+
+.top-bar{
+  padding:15px;
+  color:white;
 }
 
 .carrusel-container{
@@ -121,21 +125,47 @@ img.producto-img{
   object-fit:contain;
 }
 
+/* 🔥 FLECHAS PERFECTAS */
 .nav{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  background:rgba(0,0,0,0.5);
+
+  width:45px;
+  height:45px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,0.6);
   color:white;
-  font-size:30px;
-  padding:10px;
+  font-size:22px;
+
+  border:none;
   border-radius:50%;
+
   cursor:pointer;
+  z-index:10;
 }
 
 .prev{left:10px;}
 .next{right:10px;}
 
+.bottom-bar{
+  text-align:center;
+  padding:10px;
+}
+
+.btn-cerrar{
+  padding:10px 20px;
+  border-radius:20px;
+  background:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* CARDS */
 .cards{display:none;}
 
 .total-mobile{
@@ -147,6 +177,7 @@ img.producto-img{
 }
 
 @media(max-width:768px){
+
   .tabla-responsive{display:none;}
 
   .cards{
@@ -198,7 +229,6 @@ img.producto-img{
 <div>Fecha:<br><span id="fecha"></span></div>
 </div>
 
-<div class="tabla-responsive">
 <table>
 <thead>
 <tr>
@@ -220,7 +250,6 @@ img.producto-img{
 </tr>
 </tfoot>
 </table>
-</div>
 
 <div class="cards" id="cards"></div>
 
@@ -234,15 +263,21 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-<div style="padding:15px;color:white;">
+
+<div class="top-bar">
 <span onclick="modal.style.display='none'">← Volver</span>
 </div>
 
 <div class="carrusel-container">
-<span class="nav prev" onclick="prev()">‹</span>
+<button class="nav prev" onclick="prev()">‹</button>
 <img id="imgGrande">
-<span class="nav next" onclick="next()">›</span>
+<button class="nav next" onclick="next()">›</button>
 </div>
+
+<div class="bottom-bar">
+<button class="btn-cerrar" onclick="modal.style.display='none'">Cerrar</button>
+</div>
+
 </div>
 
 <script>
@@ -253,7 +288,6 @@ const clienteFiltro=(params.get("cliente")||"").toLowerCase();
 
 document.getElementById("fecha").innerText=new Date().toLocaleDateString();
 
-/* 🔥 FORMATO MONEDA */
 function formato(n){
   return Number(n).toLocaleString("es-PE",{minimumFractionDigits:2});
 }
@@ -306,7 +340,6 @@ tr.innerHTML=`
 tr.children[1].appendChild(img);
 tabla.appendChild(tr);
 
-/* CARD */
 const card=document.createElement("div");
 card.className="card";
 
