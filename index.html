@@ -14,7 +14,6 @@ body {
   background: linear-gradient(135deg, #0f172a, #1e40af);
 }
 
-/* CONTENEDOR */
 .container {
   max-width: 1000px;
   margin: 30px auto;
@@ -24,7 +23,6 @@ body {
   box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
-/* HEADER MÁS COMPACTO */
 .header {
   display: flex;
   justify-content: space-between;
@@ -48,7 +46,6 @@ body {
   color: #374151;
 }
 
-/* CLIENTE */
 .cliente-box {
   margin-top: 8px;
   background: #f8fafc;
@@ -65,7 +62,6 @@ body {
   color: #111827;
 }
 
-/* TABLA */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -89,29 +85,12 @@ tr:hover {
   background: #f9fafb;
 }
 
-/* COLUMNAS */
-td.id {
-  width: 25px;
-  font-size: 10px;
-  color: #888;
-}
+td.id { width: 25px; font-size: 10px; color: #888; }
+td.cantidad { width: 50px; text-align: center; }
+td.producto { width: 50%; font-weight: 600; }
+td.right { text-align: right; }
 
-td.cantidad {
-  width: 50px;
-  text-align: center;
-}
-
-td.producto {
-  width: 50%;
-  font-weight: 600;
-}
-
-td.right {
-  text-align: right;
-}
-
-/* IMAGEN */
-img {
+img.producto-img {
   width: 42px;
   height: 42px;
   object-fit: cover;
@@ -120,11 +99,10 @@ img {
   transition: 0.2s;
 }
 
-img:hover {
+img.producto-img:hover {
   transform: scale(1.08);
 }
 
-/* TOTAL */
 tfoot td {
   font-size: 16px;
   font-weight: 800;
@@ -135,7 +113,6 @@ tfoot td {
   color: #2563eb;
 }
 
-/* BOTÓN */
 .btn {
   margin-top: 18px;
   padding: 10px 18px;
@@ -215,7 +192,7 @@ tfoot td {
 </div>
 
 <!-- MODAL -->
-<div id="modal" class="modal" onclick="cerrarModal()">
+<div id="modal" class="modal">
   <img id="imgGrande">
 </div>
 
@@ -226,6 +203,25 @@ const params = new URLSearchParams(window.location.search);
 const clienteFiltro = (params.get("cliente") || "").trim().toLowerCase();
 
 document.getElementById("fecha").innerText = new Date().toLocaleDateString();
+
+const modal = document.getElementById("modal");
+const imgGrande = document.getElementById("imgGrande");
+
+// abrir modal
+function abrirModal(src) {
+  modal.style.display = "flex";
+  imgGrande.src = src;
+}
+
+// cerrar modal
+modal.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+// evitar cierre al hacer click en imagen
+imgGrande.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
 
 fetch(url)
 .then(res => res.text())
@@ -255,18 +251,32 @@ fetch(url)
 
       const tr = document.createElement("tr");
 
+      // crear imagen correctamente
+      const img = document.createElement("img");
+      img.src = imagen;
+      img.className = "producto-img";
+
+      img.onerror = () => {
+        img.src = "https://via.placeholder.com/50";
+      };
+
+      // EVENTO CORRECTO (AQUÍ ESTABA TU ERROR)
+      img.addEventListener("click", () => {
+        abrirModal(imagen);
+      });
+
+      const tdImg = document.createElement("td");
+      tdImg.appendChild(img);
+
       tr.innerHTML = `
         <td class="id">${id++}</td>
-        <td>
-          <img src="${imagen}" 
-               onclick="verImagen('${imagen}')"
-               onerror="this.src='https://via.placeholder.com/50'">
-        </td>
         <td class="cantidad">${cantidad}</td>
         <td class="producto">${producto}</td>
         <td class="right">S/ ${precio}</td>
         <td class="right">S/ ${subtotal}</td>
       `;
+
+      tr.insertBefore(tdImg, tr.children[1]);
 
       tbody.appendChild(tr);
 
@@ -277,15 +287,6 @@ fetch(url)
   document.getElementById("cliente").innerText = clienteFiltro.toUpperCase();
   document.getElementById("total_final").innerText = totalGeneral.toFixed(2);
 });
-
-function verImagen(src) {
-  document.getElementById("modal").style.display = "flex";
-  document.getElementById("imgGrande").src = src;
-}
-
-function cerrarModal() {
-  document.getElementById("modal").style.display = "none";
-}
 </script>
 
 </body>
