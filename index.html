@@ -14,6 +14,7 @@ body{
   background:linear-gradient(135deg,#0f172a,#1e40af);
 }
 
+/* CONTENEDOR */
 .container{
   max-width:1000px;
   margin:30px auto;
@@ -23,20 +24,47 @@ body{
   box-shadow:0 20px 50px rgba(0,0,0,0.25);
 }
 
+/* HEADER RESTAURADO */
 .header{
   display:flex;
   justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #e5e7eb;
+  padding-bottom:6px;
+  margin-bottom:8px;
 }
 
+.logo{
+  font-size:22px;
+  font-weight:800;
+  background:linear-gradient(90deg,#2563eb,#06b6d4);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.title{
+  font-size:14px;
+  font-weight:600;
+  color:#374151;
+}
+
+/* CLIENTE RESTAURADO */
 .cliente-box{
   margin-top:8px;
   background:#f8fafc;
   padding:10px;
   border-radius:8px;
+  font-size:13px;
   display:flex;
   justify-content:space-between;
 }
 
+.cliente-nombre{
+  font-size:15px;
+  font-weight:700;
+}
+
+/* TABLA */
 .tabla-responsive{
   width:100%;
   overflow-x:auto;
@@ -71,6 +99,7 @@ img.producto-img{
   cursor:pointer;
 }
 
+/* BOTÓN */
 .btn{
   margin-top:15px;
   width:100%;
@@ -118,9 +147,9 @@ img.producto-img{
 
 .total-mobile{
   display:none;
-  margin-top:8px;
+  margin-top:10px;
   font-weight:bold;
-  font-size:14px;
+  font-size:15px;
   text-align:right;
   color:#2563eb;
 }
@@ -132,41 +161,42 @@ img.producto-img{
   .cards{
     display:flex;
     flex-direction:column;
-    gap:4px;
+    gap:6px;
     margin-top:10px;
   }
 
   .card{
     display:flex;
-    gap:6px;
-    padding:6px;
+    gap:8px;
+    padding:8px;
     background:#fff;
     border-radius:8px;
-    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    box-shadow:0 4px 10px rgba(0,0,0,0.12);
     align-items:center;
   }
 
   .card img{
-    width:45px;
-    height:45px;
+    width:50px;
+    height:50px;
   }
 
   .card-info{
     display:flex;
     flex-direction:column;
-    gap:1px;
+    gap:2px;
   }
 
+  /* 🔥 TEXTO AJUSTADO (ni muy chico ni grande) */
   .card-info h4{
     margin:0;
-    font-size:12px;
-    line-height:1.1;
+    font-size:13px;
+    line-height:1.2;
   }
 
   .card-info p{
     margin:0;
-    font-size:10px;
-    line-height:1.05;
+    font-size:11px;
+    line-height:1.2;
   }
 
   .total-mobile{
@@ -182,13 +212,19 @@ img.producto-img{
 <div class="container">
 
 <div class="header">
-<div>SHOPnew</div>
-<div>COTIZACIÓN</div>
+<div class="logo">SHOPnew</div>
+<div class="title">COTIZACIÓN</div>
 </div>
 
 <div class="cliente-box">
-<span id="cliente"></span>
+<div>
+Cliente:<br>
+<span id="cliente" class="cliente-nombre"></span>
+</div>
+<div>
+Fecha:<br>
 <span id="fecha"></span>
+</div>
 </div>
 
 <div class="tabla-responsive">
@@ -218,7 +254,6 @@ img.producto-img{
 
 <div class="cards" id="cards"></div>
 
-<!-- TOTAL PARA MÓVIL -->
 <div class="total-mobile">
 TOTAL: S/ <span id="total_mobile">0.00</span>
 </div>
@@ -227,9 +262,7 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 
 </div>
 
-<!-- MODAL -->
 <div id="modal" class="modal">
-
 <div style="padding:15px;color:white;">
 <span onclick="modal.style.display='none'">← Volver</span>
 </div>
@@ -239,7 +272,6 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 <img id="imgGrande">
 <span class="nav next" onclick="next()">›</span>
 </div>
-
 </div>
 
 <script>
@@ -259,15 +291,8 @@ function abrirModal(src){
   modal.style.display="flex";
 }
 
-function next(){
-  i=(i+1)%imgs.length;
-  imgGrande.src=imgs[i];
-}
-
-function prev(){
-  i=(i-1+imgs.length)%imgs.length;
-  imgGrande.src=imgs[i];
-}
+function next(){i=(i+1)%imgs.length;imgGrande.src=imgs[i];}
+function prev(){i=(i-1+imgs.length)%imgs.length;imgGrande.src=imgs[i];}
 
 fetch(url)
 .then(r=>r.text())
@@ -329,14 +354,9 @@ id++;
 }
 });
 
-/* TOTAL PC */
-document.getElementById("total_final").innerText=totalGeneral.toFixed(2);
-
-/* TOTAL MÓVIL */
-document.getElementById("total_mobile").innerText=totalGeneral.toFixed(2);
-
-/* CLIENTE */
 document.getElementById("cliente").innerText=clienteFiltro.toUpperCase();
+document.getElementById("total_final").innerText=totalGeneral.toFixed(2);
+document.getElementById("total_mobile").innerText=totalGeneral.toFixed(2);
 
 });
 </script>
