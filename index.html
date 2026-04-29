@@ -14,7 +14,6 @@ body{
   background:linear-gradient(135deg,#0f172a,#1e40af);
 }
 
-/* CONTENEDOR */
 .container{
   max-width:1000px;
   margin:30px auto;
@@ -24,14 +23,12 @@ body{
   box-shadow:0 20px 50px rgba(0,0,0,0.25);
 }
 
-/* HEADER RESTAURADO */
 .header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   border-bottom:1px solid #e5e7eb;
   padding-bottom:6px;
-  margin-bottom:8px;
 }
 
 .logo{
@@ -44,27 +41,17 @@ body{
 
 .title{
   font-size:14px;
-  font-weight:600;
-  color:#374151;
 }
 
-/* CLIENTE RESTAURADO */
 .cliente-box{
   margin-top:8px;
   background:#f8fafc;
   padding:10px;
   border-radius:8px;
-  font-size:13px;
   display:flex;
   justify-content:space-between;
 }
 
-.cliente-nombre{
-  font-size:15px;
-  font-weight:700;
-}
-
-/* TABLA */
 .tabla-responsive{
   width:100%;
   overflow-x:auto;
@@ -109,14 +96,21 @@ img.producto-img{
   border:none;
 }
 
-/* MODAL */
+/* ===== MODAL ===== */
 .modal{
   display:none;
   position:fixed;
   top:0;left:0;
   width:100%;height:100%;
   background:black;
+  z-index:999;
   flex-direction:column;
+  justify-content:space-between;
+}
+
+.top-bar{
+  padding:15px;
+  color:white;
 }
 
 .carrusel-container{
@@ -124,32 +118,54 @@ img.producto-img{
   display:flex;
   justify-content:center;
   align-items:center;
+  height:100%;
+  padding:10px;
 }
 
 .modal img{
-  max-height:75vh;
+  max-width:100%;
+  max-height:80vh;
+  object-fit:contain;
 }
 
+/* FLECHAS */
 .nav{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  font-size:40px;
+  background:rgba(0,0,0,0.5);
+  border:none;
   color:white;
+  font-size:30px;
+  padding:10px;
+  border-radius:50%;
   cursor:pointer;
+  z-index:10;
 }
 
 .prev{left:10px;}
 .next{right:10px;}
 
-/* CARDS */
+.bottom-bar{
+  text-align:center;
+  padding:10px;
+}
+
+.btn-cerrar{
+  padding:10px 20px;
+  border-radius:20px;
+  background:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* ===== CARDS ===== */
 .cards{display:none;}
 
 .total-mobile{
   display:none;
   margin-top:10px;
   font-weight:bold;
-  font-size:15px;
   text-align:right;
   color:#2563eb;
 }
@@ -186,17 +202,14 @@ img.producto-img{
     gap:2px;
   }
 
-  /* 🔥 TEXTO AJUSTADO (ni muy chico ni grande) */
   .card-info h4{
     margin:0;
     font-size:13px;
-    line-height:1.2;
   }
 
   .card-info p{
     margin:0;
     font-size:11px;
-    line-height:1.2;
   }
 
   .total-mobile{
@@ -219,7 +232,7 @@ img.producto-img{
 <div class="cliente-box">
 <div>
 Cliente:<br>
-<span id="cliente" class="cliente-nombre"></span>
+<span id="cliente"></span>
 </div>
 <div>
 Fecha:<br>
@@ -248,7 +261,6 @@ Fecha:<br>
 <td class="total">S/ <span id="total_final">0.00</span></td>
 </tr>
 </tfoot>
-
 </table>
 </div>
 
@@ -262,16 +274,23 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 
 </div>
 
+<!-- MODAL -->
 <div id="modal" class="modal">
-<div style="padding:15px;color:white;">
+
+<div class="top-bar">
 <span onclick="modal.style.display='none'">← Volver</span>
 </div>
 
 <div class="carrusel-container">
-<span class="nav prev" onclick="prev()">‹</span>
+<button class="nav prev" onclick="prev()">‹</button>
 <img id="imgGrande">
-<span class="nav next" onclick="next()">›</span>
+<button class="nav next" onclick="next()">›</button>
 </div>
+
+<div class="bottom-bar">
+<button class="btn-cerrar" onclick="modal.style.display='none'">Cerrar</button>
+</div>
+
 </div>
 
 <script>
@@ -291,8 +310,15 @@ function abrirModal(src){
   modal.style.display="flex";
 }
 
-function next(){i=(i+1)%imgs.length;imgGrande.src=imgs[i];}
-function prev(){i=(i-1+imgs.length)%imgs.length;imgGrande.src=imgs[i];}
+function next(){
+  i=(i+1)%imgs.length;
+  imgGrande.src=imgs[i];
+}
+
+function prev(){
+  i=(i-1+imgs.length)%imgs.length;
+  imgGrande.src=imgs[i];
+}
 
 fetch(url)
 .then(r=>r.text())
@@ -309,7 +335,6 @@ if(c[0].toLowerCase()==clienteFiltro){
 const subtotal=parseFloat(c[4])||0;
 totalGeneral+=subtotal;
 
-/* TABLA */
 const tr=document.createElement("tr");
 
 const img=document.createElement("img");
@@ -329,7 +354,6 @@ tr.innerHTML=`
 tr.children[1].appendChild(img);
 tabla.appendChild(tr);
 
-/* CARD */
 const card=document.createElement("div");
 card.className="card";
 
