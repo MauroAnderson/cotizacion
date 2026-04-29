@@ -27,18 +27,12 @@ body {
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .logo {
   font-size: 24px;
   font-weight: 700;
   color: #2563eb;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: 500;
 }
 
 .info {
@@ -57,12 +51,16 @@ th {
   background: #2563eb;
   color: white;
   padding: 12px;
-  text-align: left;
 }
 
 td {
   padding: 10px;
   border-bottom: 1px solid #eee;
+}
+
+img {
+  width: 60px;
+  border-radius: 6px;
 }
 
 tfoot td {
@@ -84,10 +82,6 @@ tfoot td {
   border-radius: 8px;
   cursor: pointer;
 }
-
-.btn:hover {
-  background: #1e40af;
-}
 </style>
 </head>
 
@@ -97,7 +91,7 @@ tfoot td {
 
   <div class="header">
     <div class="logo">UTANI</div>
-    <div class="title">COTIZACIÓN</div>
+    <div>COTIZACIÓN</div>
   </div>
 
   <div class="info">
@@ -108,6 +102,7 @@ tfoot td {
   <table>
     <thead>
       <tr>
+        <th>Imagen</th>
         <th>Producto</th>
         <th>Cantidad</th>
         <th>Precio</th>
@@ -119,7 +114,7 @@ tfoot td {
 
     <tfoot>
       <tr>
-        <td colspan="3" class="total">TOTAL</td>
+        <td colspan="4" class="total">TOTAL</td>
         <td class="total">S/ <span id="total_final">0</span></td>
       </tr>
     </tfoot>
@@ -130,25 +125,32 @@ tfoot td {
 </div>
 
 <script>
-const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8ZtbK9OCo6gEqklNWN98PT8NIIi7nQQos5QJuztDNr6Di3ZS41mviOJwSjNsnFrOuk03MU3aF18K8/pub?output=csvL";
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8ZtbK9OCo6gEqklNWN98PT8NIIi7nQQos5QJuztDNr6Di3ZS41mviOJwSjNsnFrOuk03MU3aF18K8/pub?output=csv";
 
-// cliente desde URL
 const params = new URLSearchParams(window.location.search);
-const clienteFiltro = params.get("cliente");
+const clienteFiltro = (params.get("cliente") || "").trim().toLowerCase();
 
-// fecha automática
 document.getElementById("fecha").innerText = new Date().toLocaleDateString();
 
 fetch(url)
   .then(res => res.text())
   .then(csv => {
-    const filas = csv.split("\\n").slice(1);
+
+    const filas = csv.trim().split("\n").slice(1);
 
     let totalGeneral = 0;
     const tbody = document.getElementById("tabla");
 
     filas.forEach(fila => {
-      const [cliente, cantidad, producto, precio, total] = fila.split(",");
+
+      const col = fila.split(",");
+
+      const cliente = col[0]?.trim().toLowerCase();
+      const cantidad = col[1];
+      const producto = col[2];
+      const precio = col[3];
+      const total = col[4];
+      const imagen = col[5];
 
       if (cliente === clienteFiltro) {
 
@@ -157,6 +159,7 @@ fetch(url)
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
+          <td><img src="${imagen}" onerror="this.style.display='none'"></td>
           <td>${producto}</td>
           <td>${cantidad}</td>
           <td>${precio}</td>
