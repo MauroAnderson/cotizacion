@@ -155,27 +155,36 @@ tfoot td {
   cursor: pointer;
 }
 
-/* CARRUSEL */
+/* CONTENEDOR CARRUSEL */
 .carrusel-container {
+  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 10px;
+  align-items: center;
 }
 
+/* IMAGEN */
 .modal img {
   max-width: 100%;
   max-height: 75vh;
   object-fit: contain;
+  margin: auto;
 }
 
+/* FLECHAS */
 .nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 40px;
   color: white;
   cursor: pointer;
   padding: 10px;
   user-select: none;
 }
+
+.prev { left: 10px; }
+.next { right: 10px; }
 
 /* BARRA INFERIOR */
 .bottom-bar {
@@ -265,7 +274,9 @@ tfoot td {
           <th class="right">Total</th>
         </tr>
       </thead>
+
       <tbody id="tabla"></tbody>
+
       <tfoot>
         <tr>
           <td colspan="5" class="total">TOTAL</td>
@@ -290,9 +301,9 @@ tfoot td {
   </div>
 
   <div class="carrusel-container">
-    <span class="nav" onclick="anterior()">‹</span>
+    <span class="nav prev" onclick="anterior()">‹</span>
     <img id="imgGrande">
-    <span class="nav" onclick="siguiente()">›</span>
+    <span class="nav next" onclick="siguiente()">›</span>
   </div>
 
   <div class="bottom-bar">
