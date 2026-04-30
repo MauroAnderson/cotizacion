@@ -27,7 +27,6 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:1px solid #e5e7eb;
 }
 
 .logo{
@@ -47,25 +46,41 @@ body{
   justify-content:space-between;
 }
 
-.tabla-responsive{width:100%;overflow-x:auto;}
+.tabla-responsive{
+  width:100%;
+  overflow-x:auto;
+}
 
-table{width:100%;margin-top:15px;border-collapse:collapse;}
+table{
+  width:100%;
+  margin-top:15px;
+  border-collapse:collapse;
+}
 
-th{background:#2563eb;color:#fff;padding:8px;}
-td{padding:8px;border-bottom:1px solid #eee;}
+th{
+  background:#2563eb;
+  color:#fff;
+  padding:8px;
+}
 
-td:last-child,th:last-child{text-align:right;}
+td{
+  padding:8px;
+  border-bottom:1px solid #eee;
+}
+
+td:last-child,th:last-child{
+  text-align:right;
+}
 
 img.producto-img{
-  width:42px;height:42px;object-fit:cover;border-radius:6px;cursor:pointer;
+  width:42px;
+  height:42px;
+  object-fit:cover;
+  border-radius:6px;
+  cursor:pointer;
 }
 
-.btn{
-  margin-top:15px;width:100%;padding:10px;
-  background:#2563eb;color:#fff;border:none;
-}
-
-/* ===== MODAL ===== */
+/* MODAL */
 .modal{
   display:none;
   position:fixed;
@@ -90,22 +105,27 @@ img.producto-img{
   object-fit:contain;
 }
 
-/* FLECHAS */
+/* flechas */
 .nav{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  width:45px;height:45px;
-  display:flex;align-items:center;justify-content:center;
+  width:45px;
+  height:45px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   background:rgba(0,0,0,0.6);
-  color:white;font-size:22px;border-radius:50%;
+  color:white;
+  font-size:22px;
+  border-radius:50%;
   cursor:pointer;
 }
 
 .prev{left:10px;}
 .next{right:10px;}
 
-/* BOTÓN */
+/* botón cerrar */
 .bottom-bar{
   text-align:center;
   padding:10px;
@@ -137,11 +157,19 @@ img.producto-img{
 
 <div class="tabla-responsive">
 <table>
+<thead>
+<tr>
+<th>#</th>
+<th>Img</th>
+<th>Cant</th>
+<th>Producto</th>
+<th>Precio</th>
+<th>Total</th>
+</tr>
+</thead>
 <tbody id="tabla"></tbody>
 </table>
 </div>
-
-<button class="btn">PDF</button>
 
 </div>
 
@@ -149,7 +177,7 @@ img.producto-img{
 <div id="modal" class="modal">
 
 <div style="padding:15px;color:white;">
-<span onclick="modal.style.display='none'">← Volver</span>
+<span onclick="cerrarModal()">← Volver</span>
 </div>
 
 <div class="carrusel-container">
@@ -159,9 +187,7 @@ img.producto-img{
 </div>
 
 <div class="bottom-bar">
-<button class="btn-cerrar" onclick="modal.style.display='none'">
-Cerrar
-</button>
+<button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>
 </div>
 
 </div>
@@ -180,6 +206,10 @@ function abrirModal(src){
   modal.style.display="flex";
 }
 
+function cerrarModal(){
+  modal.style.display="none";
+}
+
 function next(){
   i=(i+1)%imgs.length;
   imgGrande.src=imgs[i];
@@ -190,35 +220,43 @@ function prev(){
   imgGrande.src=imgs[i];
 }
 
-/* 🔥 TAP EN TODO EL FONDO (MENOS CONTENIDO) */
+/* 🔥 TAP EN FONDO */
 modal.addEventListener("click",function(e){
-  if(
-    e.target.id === "modal" ||
-    e.target.classList.contains("carrusel-container")
-  ){
-    modal.style.display="none";
+  if(e.target===modal){
+    cerrarModal();
   }
 });
 
 fetch(url)
 .then(r=>r.text())
 .then(csv=>{
-const filas=csv.split("\n").slice(1);
+const filas=csv.trim().split("\n").slice(1);
+
+let id=1;
 
 filas.forEach(f=>{
 const c=f.split(",");
+
+const tr=document.createElement("tr");
 
 const img=document.createElement("img");
 img.src=c[5]?.split("|")[0];
 img.className="producto-img";
 img.onclick=()=>abrirModal(c[5]);
 
-const tr=document.createElement("tr");
-const td=document.createElement("td");
-td.appendChild(img);
+tr.innerHTML=`
+<td>${id}</td>
+<td></td>
+<td>${c[1]}</td>
+<td>${c[2]}</td>
+<td>${c[3]}</td>
+<td>${c[4]}</td>
+`;
 
-tr.appendChild(td);
+tr.children[1].appendChild(img);
 tabla.appendChild(tr);
+
+id++;
 });
 });
 </script>
