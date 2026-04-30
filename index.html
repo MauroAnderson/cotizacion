@@ -73,13 +73,11 @@ td{
   border-bottom:1px solid #eee;
 }
 
-/* 🔥 YA TENÍAS TOTAL A LA DERECHA */
 td:last-child,
 th:last-child{
   text-align:right;
 }
 
-/* 🔥 NUEVO: PRECIO A LA DERECHA */
 .right{
   text-align:right;
 }
@@ -107,15 +105,26 @@ img.producto-img{
   border:none;
 }
 
-/* MODAL */
+/* ===== MODAL ===== */
 .modal{
   display:none;
   position:fixed;
   top:0;left:0;
   width:100%;height:100%;
-  background:black;
+  background:rgba(0,0,0,0.85); /* 🔥 semi-transparente */
   z-index:999;
   flex-direction:column;
+  justify-content:space-between;
+}
+
+.top-bar{
+  padding:15px;
+  color:white;
+  font-weight:600;
+}
+
+.volver{
+  cursor:pointer;
 }
 
 .carrusel-container{
@@ -132,6 +141,7 @@ img.producto-img{
   object-fit:contain;
 }
 
+/* flechas */
 .nav{
   position:absolute;
   top:50%;
@@ -151,6 +161,20 @@ img.producto-img{
 .prev{left:10px;}
 .next{right:10px;}
 
+.bottom-bar{
+  text-align:center;
+  padding:10px;
+}
+
+.btn-cerrar{
+  padding:10px 20px;
+  border-radius:20px;
+  background:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* CARDS */
 .cards{display:none;}
 
 .total-mobile{
@@ -162,6 +186,7 @@ img.producto-img{
 }
 
 @media(max-width:768px){
+
   .tabla-responsive{display:none;}
 
   .cards{
@@ -221,8 +246,8 @@ img.producto-img{
 <th>Img</th>
 <th>Cant</th>
 <th>Producto</th>
-<th>Precio U</th>
-<th>Precio T</th>
+<th>Precio</th>
+<th>Total</th>
 </tr>
 </thead>
 
@@ -249,8 +274,9 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-<div style="padding:15px;color:white;">
-<span onclick="modal.style.display='none'">← Volver</span>
+
+<div class="top-bar">
+<span class="volver" onclick="modal.style.display='none'">← Volver a cotización</span>
 </div>
 
 <div class="carrusel-container">
@@ -258,6 +284,11 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 <img id="imgGrande">
 <button class="nav next" onclick="next()">›</button>
 </div>
+
+<div class="bottom-bar">
+<button class="btn-cerrar" onclick="modal.style.display='none'">Cerrar</button>
+</div>
+
 </div>
 
 <script>
@@ -275,14 +306,21 @@ function formato(n){
 let imgs=[],i=0;
 
 function abrirModal(src){
-  imgs=src.split("|");
-  i=0;
-  imgGrande.src=imgs[i];
+  imgs = src.split("|").map(x => x.trim()); /* 🔥 soporte múltiples imágenes */
+  i = 0;
+  imgGrande.src = imgs[i];
   modal.style.display="flex";
 }
 
-function next(){i=(i+1)%imgs.length;imgGrande.src=imgs[i];}
-function prev(){i=(i-1+imgs.length)%imgs.length;imgGrande.src=imgs[i];}
+function next(){
+  i=(i+1)%imgs.length;
+  imgGrande.src=imgs[i];
+}
+
+function prev(){
+  i=(i-1+imgs.length)%imgs.length;
+  imgGrande.src=imgs[i];
+}
 
 fetch(url)
 .then(r=>r.text())
