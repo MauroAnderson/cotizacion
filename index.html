@@ -27,6 +27,8 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  border-bottom:1px solid #e5e7eb;
+  padding-bottom:6px;
 }
 
 .logo{
@@ -36,6 +38,8 @@ body{
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
+
+.title{font-size:14px;}
 
 .cliente-box{
   margin-top:8px;
@@ -53,6 +57,7 @@ body{
 
 table{
   width:100%;
+  min-width:600px;
   margin-top:15px;
   border-collapse:collapse;
 }
@@ -68,7 +73,18 @@ td{
   border-bottom:1px solid #eee;
 }
 
-td:last-child,th:last-child{
+td:last-child,
+th:last-child{
+  text-align:right;
+}
+
+.right{
+  text-align:right;
+}
+
+.total{
+  font-weight:bold;
+  color:#2563eb;
   text-align:right;
 }
 
@@ -80,15 +96,35 @@ img.producto-img{
   cursor:pointer;
 }
 
-/* MODAL */
+.btn{
+  margin-top:15px;
+  width:100%;
+  padding:10px;
+  background:#2563eb;
+  color:#fff;
+  border:none;
+}
+
+/* ===== MODAL ===== */
 .modal{
   display:none;
   position:fixed;
   top:0;left:0;
   width:100%;height:100%;
-  background:black;
+  background:rgba(0,0,0,0.85);
   z-index:999;
   flex-direction:column;
+  justify-content:space-between;
+}
+
+.top-bar{
+  padding:15px;
+  color:white;
+  font-weight:600;
+}
+
+.volver{
+  cursor:pointer;
 }
 
 .carrusel-container{
@@ -125,7 +161,6 @@ img.producto-img{
 .prev{left:10px;}
 .next{right:10px;}
 
-/* botón cerrar */
 .bottom-bar{
   text-align:center;
   padding:10px;
@@ -138,6 +173,54 @@ img.producto-img{
   font-weight:bold;
   cursor:pointer;
 }
+
+/* CARDS */
+.cards{display:none;}
+
+.total-mobile{
+  display:none;
+  margin-top:10px;
+  font-weight:bold;
+  text-align:right;
+  color:#2563eb;
+}
+
+@media(max-width:768px){
+
+  .tabla-responsive{display:none;}
+
+  .cards{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .card{
+    display:flex;
+    gap:8px;
+    padding:8px;
+    background:#fff;
+    border-radius:8px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.12);
+  }
+
+  .card img{
+    width:50px;
+    height:50px;
+    object-fit:cover;
+  }
+
+  .card-info{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+
+  .card-info h4{margin:0;font-size:13px;}
+  .card-info p{margin:0;font-size:11px;}
+
+  .total-mobile{display:block;}
+}
 </style>
 </head>
 
@@ -147,7 +230,7 @@ img.producto-img{
 
 <div class="header">
 <div class="logo">SHOPnew</div>
-<div>COTIZACIÓN</div>
+<div class="title">COTIZACIÓN</div>
 </div>
 
 <div class="cliente-box">
@@ -167,17 +250,33 @@ img.producto-img{
 <th>Total</th>
 </tr>
 </thead>
+
 <tbody id="tabla"></tbody>
+
+<tfoot>
+<tr>
+<td colspan="5" class="total">TOTAL</td>
+<td class="total">S/ <span id="total_final">0.00</span></td>
+</tr>
+</tfoot>
 </table>
 </div>
+
+<div class="cards" id="cards"></div>
+
+<div class="total-mobile">
+TOTAL: S/ <span id="total_mobile">0.00</span>
+</div>
+
+<button class="btn" onclick="window.print()">PDF</button>
 
 </div>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
 
-<div style="padding:15px;color:white;">
-<span onclick="cerrarModal()">← Volver</span>
+<div class="top-bar">
+<span class="volver" onclick="modal.style.display='none'">← Volver a cotización</span>
 </div>
 
 <div class="carrusel-container">
@@ -187,7 +286,7 @@ img.producto-img{
 </div>
 
 <div class="bottom-bar">
-<button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>
+<button class="btn-cerrar" onclick="modal.style.display='none'">Cerrar</button>
 </div>
 
 </div>
@@ -195,35 +294,31 @@ img.producto-img{
 <script>
 const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vT8ZtbK9OCo6gEqklNWN98PT8NIIi7nQQos5QJuztDNr6Di3ZS41mviOJwSjNsnFrOuk03MU3aF18K8/pub?output=csv";
 
+const params=new URLSearchParams(window.location.search);
+const clienteFiltro=(params.get("cliente")||"").toLowerCase();
+
 document.getElementById("fecha").innerText=new Date().toLocaleDateString();
+
+function formato(n){
+  return Number(n).toLocaleString("es-PE",{minimumFractionDigits:2});
+}
 
 let imgs=[],i=0;
 
 function abrirModal(src){
-  imgs=src.split("|");
-  i=0;
-  imgGrande.src=imgs[i];
+  imgs = src.split("|").map(x => x.trim());
+  i = 0;
+  imgGrande.src = imgs[i];
   modal.style.display="flex";
 }
 
-function cerrarModal(){
-  modal.style.display="none";
-}
+function next(){i=(i+1)%imgs.length;imgGrande.src=imgs[i];}
+function prev(){i=(i-1+imgs.length)%imgs.length;imgGrande.src=imgs[i];}
 
-function next(){
-  i=(i+1)%imgs.length;
-  imgGrande.src=imgs[i];
-}
-
-function prev(){
-  i=(i-1+imgs.length)%imgs.length;
-  imgGrande.src=imgs[i];
-}
-
-/* 🔥 TAP EN FONDO */
-modal.addEventListener("click",function(e){
-  if(e.target===modal){
-    cerrarModal();
+/* 🔥 NUEVO: cerrar al tocar fondo */
+modal.addEventListener("click", function(e){
+  if(e.target === modal){
+    modal.style.display = "none";
   }
 });
 
@@ -232,15 +327,22 @@ fetch(url)
 .then(csv=>{
 const filas=csv.trim().split("\n").slice(1);
 
-let id=1;
+let totalGeneral=0,id=1;
 
 filas.forEach(f=>{
 const c=f.split(",");
 
+if(c[0].toLowerCase()==clienteFiltro){
+
+const precio=parseFloat(c[3])||0;
+const subtotal=parseFloat(c[4])||0;
+
+totalGeneral+=subtotal;
+
 const tr=document.createElement("tr");
 
 const img=document.createElement("img");
-img.src=c[5]?.split("|")[0];
+img.src=c[5].split("|")[0];
 img.className="producto-img";
 img.onclick=()=>abrirModal(c[5]);
 
@@ -249,15 +351,41 @@ tr.innerHTML=`
 <td></td>
 <td>${c[1]}</td>
 <td>${c[2]}</td>
-<td>${c[3]}</td>
-<td>${c[4]}</td>
+<td class="right">S/ ${formato(precio)}</td>
+<td>S/ ${formato(subtotal)}</td>
 `;
 
 tr.children[1].appendChild(img);
 tabla.appendChild(tr);
 
+const card=document.createElement("div");
+card.className="card";
+
+const imgCard=document.createElement("img");
+imgCard.src=c[5].split("|")[0];
+imgCard.onclick=()=>abrirModal(c[5]);
+
+const info=document.createElement("div");
+info.className="card-info";
+info.innerHTML=`
+<h4>${c[2]}</h4>
+<p>Cant: ${c[1]}</p>
+<p>S/ ${formato(precio)}</p>
+<p><b>S/ ${formato(subtotal)}</b></p>
+`;
+
+card.appendChild(imgCard);
+card.appendChild(info);
+cards.appendChild(card);
+
 id++;
+}
 });
+
+document.getElementById("cliente").innerText=clienteFiltro.toUpperCase();
+document.getElementById("total_final").innerText=formato(totalGeneral);
+document.getElementById("total_mobile").innerText=formato(totalGeneral);
+
 });
 </script>
 
