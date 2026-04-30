@@ -28,7 +28,6 @@ body{
   justify-content:space-between;
   align-items:center;
   border-bottom:1px solid #e5e7eb;
-  padding-bottom:6px;
 }
 
 .logo{
@@ -39,8 +38,6 @@ body{
   -webkit-text-fill-color:transparent;
 }
 
-.title{font-size:14px;}
-
 .cliente-box{
   margin-top:8px;
   background:#f8fafc;
@@ -50,59 +47,22 @@ body{
   justify-content:space-between;
 }
 
-.tabla-responsive{
-  width:100%;
-  overflow-x:auto;
-}
+.tabla-responsive{width:100%;overflow-x:auto;}
 
-table{
-  width:100%;
-  min-width:600px;
-  margin-top:15px;
-  border-collapse:collapse;
-}
+table{width:100%;margin-top:15px;border-collapse:collapse;}
 
-th{
-  background:#2563eb;
-  color:#fff;
-  padding:8px;
-}
+th{background:#2563eb;color:#fff;padding:8px;}
+td{padding:8px;border-bottom:1px solid #eee;}
 
-td{
-  padding:8px;
-  border-bottom:1px solid #eee;
-}
-
-td:last-child,
-th:last-child{
-  text-align:right;
-}
-
-.right{
-  text-align:right;
-}
-
-.total{
-  font-weight:bold;
-  color:#2563eb;
-  text-align:right;
-}
+td:last-child,th:last-child{text-align:right;}
 
 img.producto-img{
-  width:42px;
-  height:42px;
-  object-fit:cover;
-  border-radius:6px;
-  cursor:pointer;
+  width:42px;height:42px;object-fit:cover;border-radius:6px;cursor:pointer;
 }
 
 .btn{
-  margin-top:15px;
-  width:100%;
-  padding:10px;
-  background:#2563eb;
-  color:#fff;
-  border:none;
+  margin-top:15px;width:100%;padding:10px;
+  background:#2563eb;color:#fff;border:none;
 }
 
 /* ===== MODAL ===== */
@@ -111,20 +71,9 @@ img.producto-img{
   position:fixed;
   top:0;left:0;
   width:100%;height:100%;
-  background:rgba(0,0,0,0.85); /* 🔥 semi-transparente */
+  background:black;
   z-index:999;
   flex-direction:column;
-  justify-content:space-between;
-}
-
-.top-bar{
-  padding:15px;
-  color:white;
-  font-weight:600;
-}
-
-.volver{
-  cursor:pointer;
 }
 
 .carrusel-container{
@@ -141,26 +90,22 @@ img.producto-img{
   object-fit:contain;
 }
 
-/* flechas */
+/* FLECHAS */
 .nav{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  width:45px;
-  height:45px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  width:45px;height:45px;
+  display:flex;align-items:center;justify-content:center;
   background:rgba(0,0,0,0.6);
-  color:white;
-  font-size:22px;
-  border-radius:50%;
+  color:white;font-size:22px;border-radius:50%;
   cursor:pointer;
 }
 
 .prev{left:10px;}
 .next{right:10px;}
 
+/* BOTÓN */
 .bottom-bar{
   text-align:center;
   padding:10px;
@@ -173,54 +118,6 @@ img.producto-img{
   font-weight:bold;
   cursor:pointer;
 }
-
-/* CARDS */
-.cards{display:none;}
-
-.total-mobile{
-  display:none;
-  margin-top:10px;
-  font-weight:bold;
-  text-align:right;
-  color:#2563eb;
-}
-
-@media(max-width:768px){
-
-  .tabla-responsive{display:none;}
-
-  .cards{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-
-  .card{
-    display:flex;
-    gap:8px;
-    padding:8px;
-    background:#fff;
-    border-radius:8px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.12);
-  }
-
-  .card img{
-    width:50px;
-    height:50px;
-    object-fit:cover;
-  }
-
-  .card-info{
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-  }
-
-  .card-info h4{margin:0;font-size:13px;}
-  .card-info p{margin:0;font-size:11px;}
-
-  .total-mobile{display:block;}
-}
 </style>
 </head>
 
@@ -230,7 +127,7 @@ img.producto-img{
 
 <div class="header">
 <div class="logo">SHOPnew</div>
-<div class="title">COTIZACIÓN</div>
+<div>COTIZACIÓN</div>
 </div>
 
 <div class="cliente-box">
@@ -240,43 +137,19 @@ img.producto-img{
 
 <div class="tabla-responsive">
 <table>
-<thead>
-<tr>
-<th>#</th>
-<th>Img</th>
-<th>Cant</th>
-<th>Producto</th>
-<th>Precio</th>
-<th>Total</th>
-</tr>
-</thead>
-
 <tbody id="tabla"></tbody>
-
-<tfoot>
-<tr>
-<td colspan="5" class="total">TOTAL</td>
-<td class="total">S/ <span id="total_final">0.00</span></td>
-</tr>
-</tfoot>
 </table>
 </div>
 
-<div class="cards" id="cards"></div>
-
-<div class="total-mobile">
-TOTAL: S/ <span id="total_mobile">0.00</span>
-</div>
-
-<button class="btn" onclick="window.print()">PDF</button>
+<button class="btn">PDF</button>
 
 </div>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
 
-<div class="top-bar">
-<span class="volver" onclick="modal.style.display='none'">← Volver a cotización</span>
+<div style="padding:15px;color:white;">
+<span onclick="modal.style.display='none'">← Volver</span>
 </div>
 
 <div class="carrusel-container">
@@ -286,7 +159,9 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 </div>
 
 <div class="bottom-bar">
-<button class="btn-cerrar" onclick="modal.style.display='none'">Cerrar</button>
+<button class="btn-cerrar" onclick="modal.style.display='none'">
+Cerrar
+</button>
 </div>
 
 </div>
@@ -294,21 +169,14 @@ TOTAL: S/ <span id="total_mobile">0.00</span>
 <script>
 const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vT8ZtbK9OCo6gEqklNWN98PT8NIIi7nQQos5QJuztDNr6Di3ZS41mviOJwSjNsnFrOuk03MU3aF18K8/pub?output=csv";
 
-const params=new URLSearchParams(window.location.search);
-const clienteFiltro=(params.get("cliente")||"").toLowerCase();
-
 document.getElementById("fecha").innerText=new Date().toLocaleDateString();
-
-function formato(n){
-  return Number(n).toLocaleString("es-PE",{minimumFractionDigits:2});
-}
 
 let imgs=[],i=0;
 
 function abrirModal(src){
-  imgs = src.split("|").map(x => x.trim()); /* 🔥 soporte múltiples imágenes */
-  i = 0;
-  imgGrande.src = imgs[i];
+  imgs=src.split("|");
+  i=0;
+  imgGrande.src=imgs[i];
   modal.style.display="flex";
 }
 
@@ -322,70 +190,36 @@ function prev(){
   imgGrande.src=imgs[i];
 }
 
+/* 🔥 TAP EN TODO EL FONDO (MENOS CONTENIDO) */
+modal.addEventListener("click",function(e){
+  if(
+    e.target.id === "modal" ||
+    e.target.classList.contains("carrusel-container")
+  ){
+    modal.style.display="none";
+  }
+});
+
 fetch(url)
 .then(r=>r.text())
 .then(csv=>{
-const filas=csv.trim().split("\n").slice(1);
-
-let totalGeneral=0,id=1;
+const filas=csv.split("\n").slice(1);
 
 filas.forEach(f=>{
 const c=f.split(",");
 
-if(c[0].toLowerCase()==clienteFiltro){
-
-const precio=parseFloat(c[3])||0;
-const subtotal=parseFloat(c[4])||0;
-
-totalGeneral+=subtotal;
-
-const tr=document.createElement("tr");
-
 const img=document.createElement("img");
-img.src=c[5].split("|")[0];
+img.src=c[5]?.split("|")[0];
 img.className="producto-img";
 img.onclick=()=>abrirModal(c[5]);
 
-tr.innerHTML=`
-<td>${id}</td>
-<td></td>
-<td>${c[1]}</td>
-<td>${c[2]}</td>
-<td class="right">S/ ${formato(precio)}</td>
-<td>S/ ${formato(subtotal)}</td>
-`;
+const tr=document.createElement("tr");
+const td=document.createElement("td");
+td.appendChild(img);
 
-tr.children[1].appendChild(img);
+tr.appendChild(td);
 tabla.appendChild(tr);
-
-const card=document.createElement("div");
-card.className="card";
-
-const imgCard=document.createElement("img");
-imgCard.src=c[5].split("|")[0];
-imgCard.onclick=()=>abrirModal(c[5]);
-
-const info=document.createElement("div");
-info.className="card-info";
-info.innerHTML=`
-<h4>${c[2]}</h4>
-<p>Cant: ${c[1]}</p>
-<p>S/ ${formato(precio)}</p>
-<p><b>S/ ${formato(subtotal)}</b></p>
-`;
-
-card.appendChild(imgCard);
-card.appendChild(info);
-cards.appendChild(card);
-
-id++;
-}
 });
-
-document.getElementById("cliente").innerText=clienteFiltro.toUpperCase();
-document.getElementById("total_final").innerText=formato(totalGeneral);
-document.getElementById("total_mobile").innerText=formato(totalGeneral);
-
 });
 </script>
 
