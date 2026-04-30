@@ -141,7 +141,6 @@ img.producto-img{
   object-fit:contain;
 }
 
-/* flechas */
 .nav{
   position:absolute;
   top:50%;
@@ -315,9 +314,14 @@ function abrirModal(src){
 function next(){i=(i+1)%imgs.length;imgGrande.src=imgs[i];}
 function prev(){i=(i-1+imgs.length)%imgs.length;imgGrande.src=imgs[i];}
 
-/* 🔥 NUEVO: cerrar al tocar fondo */
+/* 🔥 NUEVO: cerrar al tocar cualquier espacio vacío */
 modal.addEventListener("click", function(e){
-  if(e.target === modal){
+  if(
+    !e.target.closest("img") &&
+    !e.target.closest(".nav") &&
+    !e.target.closest(".btn-cerrar") &&
+    !e.target.closest(".volver")
+  ){
     modal.style.display = "none";
   }
 });
